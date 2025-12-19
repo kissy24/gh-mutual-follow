@@ -51,4 +51,5 @@ This is a tool to check mutual follows on GitHub.
 
 ## 注意事項
 
-- 
+- 一度に表示するユーザーは最大30人とする(該当がそれ以上の場合、ページかスクロールできるようにする)
+- t_wadaのTDDを遵守し、作成する
