@@ -1,17 +1,32 @@
 package cli
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os/exec"
 	"regexp"
+	"strings"
 )
 
 // runCommand is a helper function to execute shell commands.
 // It can be mocked in tests.
 var runCommand = func(name string, args ...string) ([]byte, error) {
 	cmd := exec.Command(name, args...)
-	return cmd.Output()
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			return nil, fmt.Errorf("command '%s %s' failed with exit code %d: %s (stderr: %s)",
+				name, strings.Join(args, " "), exitErr.ExitCode(), err, stderr.String())
+		}
+		return nil, fmt.Errorf("command '%s %s' failed: %w (stderr: %s)",
+			name, strings.Join(args, " "), err, stderr.String())
+	}
+	return stdout.Bytes(), nil
 }
 
 // GitHubUser represents a simplified GitHub user for JSON unmarshalling.
