@@ -30,3 +30,8 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# CLI builds and local caches
+/gh-mutual-follow
+/dist/
+/.cache/

@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated local build and tool artifacts only"
+paths = [
+  '''^dist/''',
+  '''^gh-mutual-follow$''',
+  '''^coverage\.out$''',
+]
