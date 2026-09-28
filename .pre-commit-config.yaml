@@ -1,0 +1,28 @@
+minimum_pre_commit_version: '3.0.0'
+repos:
+  - repo: local
+    hooks:
+      - id: go-check
+        name: Go format, vet, race tests and build
+        entry: make check
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: gitleaks-staged
+        name: Detect secrets in staged changes
+        entry: make staged-secrets
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: security
+        name: Working tree secrets and Go vulnerabilities
+        entry: make security
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: workflows
+        name: Validate GitHub Actions
+        entry: make workflow-check
+        language: system
+        pass_filenames: false
+        files: ^\.github/workflows/.*\.ya?ml$

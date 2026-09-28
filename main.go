@@ -1,18 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"os"
+	"os/signal"
 
-	"gh-mutual-follow/internal/tui"
-	tea "github.com/charmbracelet/bubbletea"
+	"gh-mutual-follow/internal/cli"
+	"gh-mutual-follow/internal/github"
+	"golang.org/x/term"
 )
 
+var version = "dev"
+
 func main() {
-	m := tui.NewModel()
-	p := tea.NewProgram(m)
-	if _, err := p.Run(); err != nil {
-		fmt.Printf("Alas, there's been an error: %v", err)
-		os.Exit(1)
-	}
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	code := cli.Run(ctx, os.Args[1:], github.NewClient(), cli.IO{
+		In: os.Stdin, Out: os.Stdout, Err: os.Stderr,
+		InputTTY: term.IsTerminal(int(os.Stdin.Fd())),
+		ErrorTTY: term.IsTerminal(int(os.Stderr.Fd())),
+	}, version)
+	stop()
+	os.Exit(code)
 }
