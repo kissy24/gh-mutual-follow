@@ -5,6 +5,7 @@ ACTIONLINT_VERSION := v1.7.12
 .PHONY: check test fmt-check vet build security secrets staged-secrets workflow-check release-check hooks
 
 check: fmt-check vet test build
+	bash scripts/test-publish-release.sh
 
 fmt-check:
 	@test -z "$$(gofmt -l main.go internal)" || (gofmt -l main.go internal; exit 1)
