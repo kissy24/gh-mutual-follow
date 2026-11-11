@@ -84,6 +84,21 @@ gh mutual-follow unfollow --all --exclude alice --yes
 
 除外はそのコマンドだけに適用されます。繰り返し使う場合は、シェルの関数やスクリプトにコマンドを保存できます。
 
+### Raycastから両方を実行する
+
+[Raycast用スクリプト](scripts/raycast/github-mutual-follow.sh)を用意しています。Raycastの設定で **Extensions → Script Commands → Add Script Directory** から、このリポジトリの `scripts/raycast` フォルダーを追加してください。設定画面の配置はRaycastのバージョンにより異なります。
+
+登録された **GitHub Mutual Follow** を実行すると、次の2コマンドを順に実行して結果を表示します。
+
+```sh
+gh mutual-follow unfollow --all --yes
+gh mutual-follow follow-back --all --yes
+```
+
+確認入力なしで、自分だけがフォロー中の相手を全員解除し、相手だけがフォロー中の全員をフォローバックします。相互フォロー中の相手は対象外です。解除が失敗した場合はフォローバックへ進まず停止します。成功済みの変更は巻き戻しません。
+
+事前に `gh` の認証と `mutual-follow` 拡張のインストールが必要です。Homebrew標準のインストール先に対応しています。詳しくは[Raycast登録・検証記録](docs/raycast.md)を参照してください。
+
 ### JSON・終了コード
 
 ```sh
