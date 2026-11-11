@@ -2,10 +2,13 @@ GOVULNCHECK_VERSION := v1.8.0
 GITLEAKS_VERSION := v8.30.1
 ACTIONLINT_VERSION := v1.7.12
 
-.PHONY: check test fmt-check vet build security secrets staged-secrets workflow-check release-check hooks
+.PHONY: check test raycast-test fmt-check vet build security secrets staged-secrets workflow-check release-check hooks
 
-check: fmt-check vet test build
+check: fmt-check vet test raycast-test build
 	bash scripts/test-publish-release.sh
+
+raycast-test:
+	bash scripts/test-raycast.sh
 
 fmt-check:
 	@test -z "$$(gofmt -l main.go internal)" || (gofmt -l main.go internal; exit 1)

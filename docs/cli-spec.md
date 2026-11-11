@@ -167,6 +167,15 @@ gh mutual-follow unfollow --all --exclude alice
 6. `--dry-run --yes` は許可するが、ドライランを優先し変更しない。
 7. `--json` による変更実行には `--yes` を必須とする。`--dry-run --json` では不要。
 
+### 4.5 Raycast連携
+
+`scripts/raycast/github-mutual-follow.sh` をRaycastのScript Commandとして登録できる。コマンド名は `GitHub Mutual Follow`、表示モードは `fullOutput` とする。
+
+1. `gh mutual-follow unfollow --all --yes` を実行する。
+2. 正常終了した場合だけ `gh mutual-follow follow-back --all --yes` を実行する。
+
+両方とも確認入力を省略する。対象は各コマンドの実行時に取得し直す。除外指定はなく、相互フォロー中の相手は操作しない。失敗時はその終了コードで停止し、成功済みの変更を巻き戻さない。スクリプト自体に認証情報を保存しない。CLIのサブコマンドやフラグは追加しない。
+
 ## 5. 確認と実行の流れ
 
 変更コマンドは、引数検証 → 認証ユーザー取得 → 全件取得 → 対象判定 → 除外 → 確認 → 順次実行 → 結果出力の順に進む。
